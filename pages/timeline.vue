@@ -125,18 +125,27 @@ export default {
 
     onAddTask(info) {
       const title = prompt('Enter task title:')
-      if (title) {
-        this.tasks.push({
-          id: Date.now().toString(),
-          title,
-          start: info.date || info.start,
-          end: info.end || new Date(new Date(info.start).getTime() + 60*60*1000),
-          resourceId: info.resourceId || 'a',
-          backgroundColor: '#3b82f6',
-          textColor: '#fff',
-        })
+      if (!title) return
+
+      // Determine start and end
+      const start = info.start || info.date || new Date()
+      const end = info.end || new Date(start.getTime() + 60 * 60 * 1000) // 1 hour default if single click
+
+      const newTask = {
+        id: Date.now().toString(),
+        title,
+        start,
+        end,
+        resourceId: info.resource?.id || 'a',
+        backgroundColor: '#3b82f6',
+        textColor: '#fff',
       }
+
+      this.tasks = [...this.tasks, newTask]
+      this.lastAction = `Added task: ${newTask.title}`
     },
+
+
 
     onTaskClick(info) {
       alert(`Task: ${info.event.title}\nStart: ${info.event.start}\nEnd: ${info.event.end}`)
