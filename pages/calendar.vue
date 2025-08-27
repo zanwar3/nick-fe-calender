@@ -62,7 +62,12 @@
 
           <div class="calendar-wrap">
             <div class="calendar-container">
-              <EventCalendar :options="calendarOptions" />
+              <EventCalendar 
+                :options="calendarOptions" 
+                :addEvent="true"
+                @add-event="onAddEvent"
+                @event-click="onEventClick"
+              />
             </div>
           </div>
         </div>
@@ -134,14 +139,7 @@
               center: 'title', 
               end: ''
             },
-            // Event handlers
-            eventClick: (info) => {
-              this.lastAction = `Clicked event: ${info.event.title}`
-              console.log('Event clicked:', info.event)
-              
-              // Show event details
-              alert(`Event: ${info.event.title}\nStart: ${info.event.start}\nEnd: ${info.event.end || 'No end time'}`)
-            },
+            // Event handlers (click handlers are centralized in EventCalendar component)
             eventDrop: (info) => {
               this.lastAction = `Moved event: ${info.event.title} to ${info.event.start.toLocaleDateString()}`
               console.log('Event dropped:', info.event)
@@ -150,35 +148,7 @@
               this.lastAction = `Resized event: ${info.event.title}`
               console.log('Event resized:', info.event)
             },
-            dateClick: (info) => {
-              this.lastAction = `Clicked date: ${info.date.toLocaleDateString()}`
-              console.log('Date clicked:', info.date)
-              
-              // Ask user to create event
-              const title = prompt('Enter event title:')
-              if (title) {
-                this.addEvent({
-                  title: title,
-                  start: info.date,
-                  allDay: info.allDay
-                })
-              }
-            },
-            select: (info) => {
-              this.lastAction = `Selected date range: ${info.start.toLocaleDateString()} - ${info.end.toLocaleDateString()}`
-              console.log('Date range selected:', info)
-              
-              // Ask user to create event
-              const title = prompt('Enter event title for selected period:')
-              if (title) {
-                this.addEvent({
-                  title: title,
-                  start: info.start,
-                  end: info.end,
-                  allDay: info.allDay
-                })
-              }
-            },
+            
             // Styling
             dayMaxEvents: 3,
             moreLinkClick: 'popover',
@@ -351,6 +321,22 @@
             '#8b5cf6', '#06b6d4', '#84cc16', '#f97316'
           ]
           return colors[Math.floor(Math.random() * colors.length)]
+        },
+        onAddEvent(info) {
+          this.lastAction = `Add event from ${info.date ? 'dateClick' : 'select'}`
+          const title = prompt('Enter event title:')
+          if (title) {
+            this.addEvent({
+              title: title,
+              start: info.date || info.start,
+              end: info.end,
+              allDay: info.allDay
+            })
+          }
+        },
+        onEventClick(info) {
+          this.lastAction = `Clicked event: ${info.event.title}`
+          alert(`Event: ${info.event.title}\nStart: ${info.event.start}\nEnd: ${info.event.end || 'No end time'}`)
         }
       }
     }
