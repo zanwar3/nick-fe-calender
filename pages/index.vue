@@ -7,7 +7,7 @@
 
         <div class="actions">
           <nuxt-link to="/calendar" class="btn btn-primary">Open Calendar</nuxt-link>
-          <a href="#features" class="btn btn-secondary">Learn More</a>
+          <nuxt-link to="/timeline" class="btn btn-secondary">TimeLine View</nuxt-link>
         </div>
       </div>
     </div>

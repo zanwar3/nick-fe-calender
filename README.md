@@ -1,9 +1,9 @@
-# mytimeline-app
+# @event-calendar/core-app
 
-> My smashing Nuxt.js project
+> App using @event-calendar/core via CDN download
 
 ## Build Setup
-
+> Node.js : v16.20.2 (recommended)
 ```bash
 # install dependencies
 $ npm install
@@ -18,5 +18,8 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
+# Routes
+
+> /calendar & /timeline
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
